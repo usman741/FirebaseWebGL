@@ -14,7 +14,5 @@ namespace FirebaseWebGL.Examples.Utils
         public void GoToStorageScene() => SceneManager.LoadScene("StorageExampleScene");
         
         public void GoToFirestoreScene() => SceneManager.LoadScene("FirestoreExampleScene");
-
-        public void GoToAnalyticsScene() => SceneManager.LoadScene("AnalyticsExampleScene");
     }
 }

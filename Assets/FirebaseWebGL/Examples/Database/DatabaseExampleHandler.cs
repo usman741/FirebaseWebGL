@@ -1,4 +1,6 @@
-﻿using FirebaseWebGL.Examples.Utils;
+﻿using System;
+using System.Collections.Generic;
+using FirebaseWebGL.Examples.Utils;
 using FirebaseWebGL.Scripts.FirebaseBridge;
 using FirebaseWebGL.Scripts.Objects;
 using TMPro;
@@ -10,7 +12,7 @@ namespace FirebaseWebGL.Examples.Database
     {
         public TMP_InputField pathInputField;
         public TMP_InputField valueInputField;
-
+        public string JsonValue;
         public TMP_InputField amountInputField;
 
         public TextMeshProUGUI outputText;
@@ -21,12 +23,17 @@ namespace FirebaseWebGL.Examples.Database
                 DisplayError("The code is not running on a WebGL build; as such, the Javascript functions will not be recognized.");
         }
 
+
+
+        // GetData login
         public void GetJSON() =>
-            FirebaseDatabase.GetJSON(pathInputField.text, gameObject.name, "DisplayData", "DisplayErrorObject");
+            FirebaseDatabase.GetJSON("UserData", gameObject.name, "DisplayData", "DisplayErrorObject");
 
-        public void PostJSON() => FirebaseDatabase.PostJSON(pathInputField.text, valueInputField.text, gameObject.name,
-            "DisplayInfo", "DisplayErrorObject");
+//        public void PostJSON() => FirebaseDatabase.PostJSON(pathInputField.text, valueInputField.text, gameObject.name,
+  //          "DisplayInfo", "DisplayErrorObject");
 
+        public void PostJSON() => FirebaseDatabase.PostJSON(pathInputField.text, JsonValue, gameObject.name,
+          "DisplayInfo", "DisplayErrorObject");
         public void PushJSON() => FirebaseDatabase.PushJSON(pathInputField.text, valueInputField.text, gameObject.name,
             "DisplayInfo", "DisplayErrorObject");
 
@@ -67,18 +74,67 @@ namespace FirebaseWebGL.Examples.Database
             FirebaseDatabase.ToggleBooleanWithTransaction(pathInputField.text, gameObject.name, "DisplayInfo",
                 "DisplayErrorObject");
 
+
+
+        #region Login
+        public void LoginUser()
+        {
+            GetJSON();
+        }
+
+
+        public TMP_InputField userNameInputfield;
+        public TMP_InputField passwordInputfield;
+        
         public void DisplayData(string data)
         {
             outputText.color = outputText.color == Color.green ? Color.blue : Color.green;
             outputText.text = data;
+            
             Debug.Log(data);
+            Root getData = new();
+            getData = JsonUtility.FromJson<Root>(data);
+            Debug.Log(getData.userData.Count + " UserData entries ");
+
+            //Check USerName And PasswordData
+            UserDetail mydet = new UserDetail();
+          
+
+            for (int i = 0; i < getData.userData.Count; i++)
+            {
+                if (getData.userData[i].email == userNameInputfield.text)
+                {
+                    print("DataExists Checking PAssword");
+                    if (getData.userData[i].password == passwordInputfield.text)
+                    {
+                        print("UserRecord Found ");
+                        outputText.text = "You are Successfully Logged in ";
+                        break;
+                    }
+                }
+                else
+                    print("DataDoes not exist Please Register Your Self");
+            }
+
         }
+
+        #endregion
+
+        #region USerRegister
+       public void RegisterUser()
+        {
+
+        }
+
+        #endregion
+
 
         public void DisplayInfo(string info)
         {
             outputText.color = Color.white;
             outputText.text = info;
             Debug.Log(info);
+
         }
 
         public void DisplayErrorObject(string error)
@@ -93,5 +149,26 @@ namespace FirebaseWebGL.Examples.Database
             outputText.text = error;
             Debug.LogError(error);
         }
+
+
+       
+    
+
     }
+
+
+
+}
+[Serializable]
+public class Root
+{
+    public List<UserDetail> userData = new List<UserDetail>();
+}
+[Serializable]
+public class UserDetail
+{
+    public string email;
+    public string password;
+    public string User_Regen;
+    public string User_School;
 }

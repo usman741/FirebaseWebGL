@@ -9,11 +9,11 @@ mergeInto(LibraryManager.library, {
         try {
 
             firebase.database().ref(parsedPath).once('value').then(function(snapshot) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -27,11 +27,11 @@ mergeInto(LibraryManager.library, {
         try {
 
             firebase.database().ref(parsedPath).set(JSON.parse(parsedValue)).then(function(unused) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: " + parsedValue + " was posted to " + parsedPath);
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: " + parsedValue + " was posted to " + parsedPath);
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -45,11 +45,11 @@ mergeInto(LibraryManager.library, {
         try {
 
             firebase.database().ref(parsedPath).push().set(JSON.parse(parsedValue)).then(function(unused) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: " + parsedValue + " was pushed to " + parsedPath);
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: " + parsedValue + " was pushed to " + parsedPath);
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -63,11 +63,11 @@ mergeInto(LibraryManager.library, {
         try {
 
             firebase.database().ref(parsedPath).update(JSON.parse(parsedValue)).then(function(unused) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: " + parsedValue + " was updated in " + parsedPath);
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: " + parsedValue + " was updated in " + parsedPath);
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -80,11 +80,11 @@ mergeInto(LibraryManager.library, {
         try {
 
             firebase.database().ref(parsedPath).remove().then(function(unused) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: " + parsedPath + " was deleted");
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: " + parsedPath + " was deleted");
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -97,15 +97,15 @@ mergeInto(LibraryManager.library, {
         try {
 
             firebase.database().ref(parsedPath).on('value', function(snapshot) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
-    StopListeningForValueChanged: function(path, objectName, callback, fallback) {
+    StopListeningForValueChanged: function(path, parsedObjectName, callback, fallback) {
         var parsedPath = UTF8ToString(path);
         var parsedObjectName = UTF8ToString(objectName);
         var parsedCallback = UTF8ToString(callback);
@@ -113,9 +113,9 @@ mergeInto(LibraryManager.library, {
 
         try {
             firebase.database().ref(parsedPath).off('value');
-            window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: listener removed");
+            unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: listener removed");
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -128,15 +128,15 @@ mergeInto(LibraryManager.library, {
         try {
 
             firebase.database().ref(parsedPath).on('child_added', function(snapshot) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
-    StopListeningForChildAdded: function(path, objectName, callback, fallback) {
+    StopListeningForChildAdded: function(path, parsedObjectName, callback, fallback) {
         var parsedPath = UTF8ToString(path);
         var parsedObjectName = UTF8ToString(objectName);
         var parsedCallback = UTF8ToString(callback);
@@ -144,9 +144,9 @@ mergeInto(LibraryManager.library, {
 
         try {
             firebase.database().ref(parsedPath).off('child_added');
-            window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: listener removed");
+            unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: listener removed");
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -159,15 +159,15 @@ mergeInto(LibraryManager.library, {
         try {
 
             firebase.database().ref(parsedPath).on('child_changed', function(snapshot) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
-    StopListeningForChildChanged: function(path, objectName, callback, fallback) {
+    StopListeningForChildChanged: function(path, parsedObjectName, callback, fallback) {
         var parsedPath = UTF8ToString(path);
         var parsedObjectName = UTF8ToString(objectName);
         var parsedCallback = UTF8ToString(callback);
@@ -175,9 +175,9 @@ mergeInto(LibraryManager.library, {
 
         try {
             firebase.database().ref(parsedPath).off('child_changed');
-            window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: listener removed");
+            unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: listener removed");
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -190,15 +190,15 @@ mergeInto(LibraryManager.library, {
         try {
 
             firebase.database().ref(parsedPath).on('child_removed', function(snapshot) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, JSON.stringify(snapshot.val()));
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
-    StopListeningForChildRemoved: function(path, objectName, callback, fallback) {
+    StopListeningForChildRemoved: function(path, parsedObjectName, callback, fallback) {
         var parsedPath = UTF8ToString(path);
         var parsedObjectName = UTF8ToString(objectName);
         var parsedCallback = UTF8ToString(callback);
@@ -206,9 +206,9 @@ mergeInto(LibraryManager.library, {
 
         try {
             firebase.database().ref(parsedPath).off('child_removed');
-            window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: listener removed");
+            unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: listener removed");
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -227,11 +227,11 @@ mergeInto(LibraryManager.library, {
                     return amount;
                 }
             }).then(function(unused) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: transaction run in " + parsedPath);
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: transaction run in " + parsedPath);
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     },
 
@@ -250,11 +250,11 @@ mergeInto(LibraryManager.library, {
                     return true;
                 }
             }).then(function(unused) {
-                window.unityInstance.SendMessage(parsedObjectName, parsedCallback, "Success: transaction run in " + parsedPath);
+                unityInstance.Module.SendMessage(parsedObjectName, parsedCallback, "Success: transaction run in " + parsedPath);
             });
 
         } catch (error) {
-            window.unityInstance.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
+            unityInstance.Module.SendMessage(parsedObjectName, parsedFallback, JSON.stringify(error, Object.getOwnPropertyNames(error)));
         }
     }
 
